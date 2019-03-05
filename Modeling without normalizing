@@ -1,0 +1,13 @@
+# Split the dataset and labels into training and test sets
+#from sklearn.model_selection import train_test_split
+wine.var()
+# Proline is extremely high variance followed by Magnesium
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+# Fit the k-nearest neighbors model to the training data
+#https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
+knn.fit(X_train,y_train)
+
+# Score the model on the test 
+#score(X, y[, sample_weight])	Returns the mean accuracy on the given test data and labels.
+print(knn.score(X_test,y_test))
