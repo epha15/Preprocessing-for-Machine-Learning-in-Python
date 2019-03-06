@@ -1,7 +1,7 @@
 # Write a pattern to extract numbers and decimals
 #import re
 def return_mileage(length):
-    pattern = re.compile(r"\d+\.")
+    pattern = re.compile(r"\d+\.\d+")
     
     # Search the text for matches
     mile = re.match(pattern,length)
