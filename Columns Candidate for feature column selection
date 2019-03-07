@@ -1,0 +1,7 @@
+Good candicate for feature selections:
+
+- Several columns of running times that have been averaged into a new column.
+- A column of text that has already had a float extracted out of it.
+- A categorial field that has been one-hot encoded.
+ - Your dataset contains columns related to whether something is a fruit or 
+vegetable, the name of the fruit or vegetable, and the scientific name of the plant.
