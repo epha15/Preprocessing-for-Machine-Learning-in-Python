@@ -8,4 +8,4 @@ wine_X = wine.drop("Type", axis=1)
 transformed_X = pca.fit_transform(wine_X)
 
 # Look at the percentage of variance explained by the different components
-print(transformed_X)
+print(pca.explained_variance_ratio_)
