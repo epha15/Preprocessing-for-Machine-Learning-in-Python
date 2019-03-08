@@ -64,3 +64,78 @@ type_set = pd.get_dummies(ufo['type'])
 # Concatenate this set back to the ufo DataFrame
 ufo = pd.concat([ufo, type_set], axis=1)
 print(ufo)
+
+Features from dates
+# Look at the first 5 rows of the date column
+print(ufo['date'].head(5))
+
+# Extract the month from the date column
+ufo["month"] = ufo["date"].apply(lambda row: row.month)
+
+# Extract the year from the date column
+ufo["year"] = ufo["date"].apply(lambda row: row.year)
+
+# Take a look at the head of all three columns
+print(ufo[['date','month','year']].head())
+
+Text vectorization
+# Take a look at the head of the desc field
+print(ufo.desc.head())
+
+# Create the tfidf vectorizer object
+vec = TfidfVectorizer()
+
+# Use vec's fit_transform method on the desc field
+desc_tfidf = vec.fit_transform(ufo.desc)
+
+# Look at the number of columns this creates
+print(desc_tfidf.shape)
+
+Selecting the ideal dataset
+# Check the correlation between the seconds, seconds_log, and minutes columns
+print(ufo[['seconds','seconds_log','minutes']].corr())
+
+# Make a list of features to drop
+to_drop = ['city','country','lat','long','state','desc','length_of_time','seconds','minutes','date','recorded']
+
+# Drop those features
+ufo_dropped = ufo.drop(columns = to_drop)
+
+# Let's also filter some words out of the text vector we created
+def words_to_filter(vocab, original_vocab, vector, top_n):
+    filter_list = []
+    for i in range(0, vector.shape[0]):
+    
+        # Here we'll call the function from the previous exercise, and extend the list we're creating
+        filtered = return_weights(vocab, original_vocab, vector, i, top_n)
+        filter_list.extend(filtered)
+    # Return the list in a set, so we don't get duplicate word indices
+    return set(filter_list)
+    
+filtered_words = words_to_filter(vocab, vec.vocabulary_, desc_tfidf, 4)
+
+Modeling the UFO dataset, part 1
+# Take a look at the features in the X set of data
+print(X.columns)
+
+# Split the X and y sets using train_test_split, setting stratify=y
+train_X, test_X, train_y, test_y = train_test_split(X,y,stratify=y)
+
+# Fit knn to the training sets
+knn.fit(train_X,train_y)
+
+# Print the score of knn on the test sets
+print(knn.score(test_X,test_y))
+
+Modeling the UFO dataset, part 2
+# Use the list of filtered words we created to filter the text vector
+filtered_text = desc_tfidf[:, list(filtered_words)]
+
+# Split the X and y sets using train_test_split, setting stratify=y 
+train_X, test_X, train_y, test_y = train_test_split(filtered_text.toarray(), y, stratify=y)
+
+# Fit nb to the training sets
+nb.fit(train_X,train_y)
+
+# Print the score of nb on the test sets
+print(nb.score(test_X,test_y))
